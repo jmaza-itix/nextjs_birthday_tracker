@@ -1,0 +1,31 @@
+name: Deploy to server
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ssh-pull:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up SSH agent
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_KEY }}
+
+    - name: Pull latest code on server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd /opt/app/app_birthday/src
+        git pull origin main
+
+    - name: Build and restart Docker container
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd /opt/app/app_birthday/src
+        docker build -t app_birthday .
+        docker stop app_birthday || true
+        docker rm app_birthday || true
+        docker run -d --name app_birthday app_birthday
+        # docker run -d --name app_birthday app_birthday

@@ -78,7 +78,7 @@ export type FormattedCustomersTable = {
 export type BirthdayForm = {
   id: number;
   name: string;
-  email: string;
+  email: string | null;
   day: number;
   month: number;
   year: number | null;

@@ -3,8 +3,6 @@ import { addBirthday, getAllBirthdaysSorted } from "@/lib/actions";
 import { monthsEnum } from "@/lib/definitions";
 
 export default async function HomePage() {
-  const birthdays = await getAllBirthdaysSorted();
-
   return (
     <main className="max-w-xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Birthdays</h1>

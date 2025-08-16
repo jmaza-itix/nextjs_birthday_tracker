@@ -36,9 +36,19 @@ export async function getBirthdayById(params: { id: string | number }) {
   });
 }
 
+function toTitleCase(str: string | undefined): string {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .filter(Boolean) // remove accidental double spaces
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export async function addBirthday(formData: FormData) {
   "use server";
-  const name = formData.get("name")?.toString();
+  const name = toTitleCase(formData.get("name")?.toString());
   const email = formData.get("email")?.toString();
   const day = parseInt(formData.get("day") as string, 10);
   const month = parseInt(formData.get("month") as string, 10);

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { stringify } from "querystring";
+import { BirthdayForm } from "./definitions";
 
 export async function getAllBirthdaysSorted() {
   const birthdays = await prisma.birthday.findMany();
@@ -11,16 +11,16 @@ export async function getAllBirthdaysSorted() {
   const currMonth = new Date().getMonth() + 1;
   const currDay = new Date().getDate();
 
-  birthdays.sort((a, b) => {
+  birthdays.sort((a: BirthdayForm, b: BirthdayForm) => {
     if (a.month !== b.month) return a.month - b.month;
     return a.day - b.day;
   });
 
-  const next = birthdays.filter((b) => {
+  const next = birthdays.filter((b: BirthdayForm) => {
     return b.month > currMonth || (b.month === currMonth && b.day >= currDay);
   });
 
-  const past = birthdays.filter((b) => {
+  const past = birthdays.filter((b: BirthdayForm) => {
     return b.month < currMonth || (b.month === currMonth && b.day < currDay);
   });
 

@@ -71,7 +71,7 @@ export async function addBirthday(formData: FormData) {
 }
 
 export async function updateBirthday(id: number, formData: FormData) {
-  const name = formData.get("name")?.toString();
+  const name = toTitleCase(formData.get("name")?.toString());
   const email = formData.get("email")?.toString();
   const day = parseInt(formData.get("day") as string, 10);
   const month = parseInt(formData.get("month") as string, 10);

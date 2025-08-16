@@ -40,7 +40,7 @@ export function Card({ birthday }: { birthday: BirthdayForm }) {
     } else {
       prediction = `Today is his/her birthday!`;
     }
-    proximityClass = "bg-red-400  text-white border-4 border-double ";
+    proximityClass = "bg-red-400 text-white border-4 border-double ";
   } else if (diff <= 7) {
     // very soon
     prediction = `${(diff + 1).toFixed(0)} days left`;
@@ -54,12 +54,6 @@ export function Card({ birthday }: { birthday: BirthdayForm }) {
   } else {
     // normal
     proximityClass = "bg-white";
-  }
-
-  function getPrediction(birthday: BirthdayForm) {
-    var prediction = "";
-
-    return prediction;
   }
 
   return (

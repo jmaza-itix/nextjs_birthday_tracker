@@ -5,7 +5,7 @@ import { deleteBirthday } from "@/lib/actions";
 
 export function UpdateBirthday({ id }: { id: number }) {
   return (
-    <Link href={`/${id}/edit`} className="p-2 rounded hover:bg-gray-300">
+    <Link href={`/${id}/edit`} className="p-2 rounded hover:bg-blue-300">
       <PencilIcon className="w-5" />
     </Link>
   );

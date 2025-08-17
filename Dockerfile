@@ -7,7 +7,7 @@ RUN npm ci --only=production
 COPY prisma ./prisma
 COPY public ./public
 COPY src ./src
-COPY next.config.js ./
+COPY src/next.config.js ./
 RUN npx prisma generate
 RUN npm run build
 

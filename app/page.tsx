@@ -5,7 +5,7 @@ import { monthsEnum } from "@/lib/definitions";
 export default async function HomePage() {
   return (
     <main className="max-w-xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Birthdays!!!!!</h1>
+      <h1 className="text-2xl font-bold mb-4">Birthdays!</h1>
 
       <form action={addBirthday} className="mb-6 space-y-2">
         <input

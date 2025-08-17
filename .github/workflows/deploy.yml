@@ -23,7 +23,6 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
           cd /opt/app/app_birthday/src &&
           docker build -t app_birthday . &&
-          docker stop app_birthday || true &&
-          docker rm app_birthday || true &&
+          docker rm -f app_birthday || true &&
           docker run -d --name app_birthday app_birthday      
         "

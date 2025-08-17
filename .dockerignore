@@ -6,4 +6,3 @@ Dockerfile
 .github
 .next
 *.log
-.env

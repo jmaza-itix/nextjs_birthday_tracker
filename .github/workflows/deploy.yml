@@ -1,28 +1,43 @@
 name: Deploy to server
+
 on:
   push:
     branches:
       - main
 
 jobs:
-  ssh-pull:
+  build-and-push:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Set up SSH agent
-      uses: webfactory/ssh-agent@v0.8.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_KEY }}
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Pull latest code on server
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /opt/app/app_birthday/src && git pull origin main"
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and restart Docker container
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "
-          cd /opt/app/app_birthday/src &&
-          docker build -t app_birthday . &&
-          docker rm -f app_birthday || true &&
-          docker run -d --name app_birthday --restart unless-stopped app_birthday      
-        "
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/jmaza-itix/nextjs_birthday_tracker:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH into server and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker pull ghcr.io/jmaza-itix/nextjs_birthday_tracker:latest
+            docker stop app_birthday || true
+            docker rm app_birthday || true
+            docker run -d --name app_birthday ghcr.io/jmaza-itix/nextjs_birthday_tracker:latest

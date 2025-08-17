@@ -24,5 +24,5 @@ jobs:
           cd /opt/app/app_birthday/src &&
           docker build -t app_birthday . &&
           docker rm -f app_birthday || true &&
-          docker run -d --name app_birthday app_birthday      
+          docker run -d --name app_birthday --restart unless-stopped app_birthday      
         "

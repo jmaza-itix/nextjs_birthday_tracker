@@ -6,8 +6,14 @@ RUN npm ci --only=production
 
 COPY prisma ./prisma
 COPY public ./public
-COPY src ./src
+COPY app ./app
+COPY lib ./lib
+COPY ui ./ui
 COPY next.config.ts ./
+COPY tsconfig.json ./
+COPY eslint.config.mjs ./
+COPY postcss.config.mjs ./
+
 RUN npx prisma generate
 RUN npm run build
 

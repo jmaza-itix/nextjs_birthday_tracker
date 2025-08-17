@@ -1,5 +1,9 @@
-node_modules
-.git
 tests
+node_modules
+.dockerignore
+Dockerfile
+.git
+.github
+.next
 *.log
 .env
